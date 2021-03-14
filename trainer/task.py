@@ -12,8 +12,10 @@ MODEL_FILE = 'files/models/saved-model.h5'
 # Defaults
 DEF_BATCH_SIZE = 200
 DEF_EPOCHS = 10
+DEF_DISPLAY_DATA = False
 
-def get_data(batch_size=DEF_BATCH_SIZE):
+
+def get_data(batch_size=DEF_BATCH_SIZE, display_data=DEF_DISPLAY_DATA):
     """
     Get data from data file
     """
@@ -36,15 +38,23 @@ def get_data(batch_size=DEF_BATCH_SIZE):
         return features, labels
     dataset = dataset.map(preprocess_label)
 
+    # Display data if display data flag is on
+    if display_data:
+        for feature_batch, label_batch in dataset.take(1):
+            print(f"'class': {label_batch}")
+            print('features:')
+            for feature, value in feature_batch.items():
+                print(f'    {feature:30s}: {value}')
+
     # Return dataset
     return dataset
 
 
-def train_and_save_model(batch_size=DEF_BATCH_SIZE, epochs=DEF_EPOCHS):
+def train_and_save_model(batch_size=DEF_BATCH_SIZE, epochs=DEF_EPOCHS, display_data=DEF_DISPLAY_DATA):
     """
     Train model. Save model afterwards.
     """
-    dataset = get_data(batch_size)
+    dataset = get_data(batch_size, display_data)
     model = MushroomClassifierModel()
     model.compile(
         optimizer='adam',
@@ -71,9 +81,16 @@ if __name__ == '__main__':
         default=DEF_EPOCHS,
         help='Number of training epochs'
     )
+    parser.add_argument(
+        '--display-data',
+        dest='display_data',
+        action='store_true',
+        default=DEF_DISPLAY_DATA,
+        help='Display data sample before training')
 
     # Parse args and train model
     args = parser.parse_args()
     train_and_save_model(
         batch_size=args.batch_size,
-        epochs=args.epochs)
+        epochs=args.epochs,
+        display_data=args.display_data)
