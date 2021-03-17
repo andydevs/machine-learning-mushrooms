@@ -1,13 +1,16 @@
 """
 Data input pipeline
 """
+import tensorflow as tf
+import pandas as pd
 
-def get_data(batch_size, shuffle_buffer, repeat_num, train_frac, display_data):
+
+def get_data(data_file, batch_size, shuffle_buffer, repeat_num, train_frac, display_data):
     """
     Get data from data file
     """
     # Read dataset. Split features and labels
-    df = pd.read_csv(DATA_FILE)
+    df = pd.read_csv(data_file)
     labels = df.pop('class')
     dataset = tf.data.Dataset.from_tensor_slices((dict(df), labels))
 

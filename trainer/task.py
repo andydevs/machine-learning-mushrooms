@@ -79,6 +79,7 @@ if __name__ == '__main__':
     # Parse args and train model
     args = parser.parse_args()
     train_dataset, test_dataset = get_data(
+        data_file=DATA_FILE,
         batch_size=args.batch_size,
         shuffle_buffer=args.shuffle_buffer,
         repeat_num=args.repeat_num,
