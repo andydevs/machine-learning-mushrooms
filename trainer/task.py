@@ -3,8 +3,9 @@ Load data and train model
 """
 import tensorflow as tf
 import pandas as pd
-from .model import MushroomClassifierModel
 from argparse import ArgumentParser
+from .data import get_data
+from .model import MushroomClassifierModel
 
 # Other constants
 DATA_FILE = 'files/data/mushrooms.csv'
@@ -17,55 +18,6 @@ DEF_REPEAT_NUM = 4
 DEF_TRAIN_FRAC = 0.7
 DEF_EPOCHS = 10
 DEF_DISPLAY_DATA = False
-
-
-def get_data(
-    batch_size=DEF_BATCH_SIZE, 
-    shuffle_buffer=DEF_SHUFF_BUFF, 
-    repeat_num=DEF_REPEAT_NUM,
-    train_frac=DEF_TRAIN_FRAC, 
-    display_data=DEF_DISPLAY_DATA):
-    """
-    Get data from data file
-    """
-    # Read dataset. Split features and labels
-    df = pd.read_csv(DATA_FILE)
-    labels = df.pop('class')
-    dataset = tf.data.Dataset.from_tensor_slices((dict(df), labels))
-
-    # Preprocess labels
-    def preprocess_label(features, labels):
-        """
-        Convert string-categorical labels into
-        binary one-hot representation
-        """
-        true_label = tf.constant('p')
-        labels = tf.math.equal(labels, true_label)
-        labels = tf.cast(labels, tf.uint8)
-        labels = tf.one_hot(labels, depth=2)
-        return features, labels
-    dataset = dataset.map(preprocess_label)
-
-    # Shuffle, batch, and repeat dataset
-    dataset = dataset.shuffle(shuffle_buffer)
-    dataset = dataset.batch(batch_size)
-    dataset = dataset.repeat(repeat_num)
-
-    # Display data if display data flag is on
-    if display_data:
-        for feature_batch, label_batch in dataset.take(1):
-            print(f"'class': {label_batch}")
-            print('features:')
-            for feature, value in feature_batch.items():
-                print(f'    {feature:30s}: {value}')
-
-    # Split into training and testing 
-    train_num = int(train_frac*len(dataset))
-    train_dataset = dataset.take(train_num)
-    test_dataset = dataset.skip(train_num)
-
-    # Return dataset
-    return train_dataset, test_dataset
 
 
 def train_and_evaluate_model(train_dataset, test_dataset, epochs=DEF_EPOCHS):
@@ -100,6 +52,12 @@ if __name__ == '__main__':
         default=DEF_SHUFF_BUFF, 
         help='Size of shuffle buffer')
     parser.add_argument(
+        '--repeat',
+        type=int,
+        dest='repeat_num',
+        default=DEF_REPEAT_NUM,
+        help='Number of times that the dataset is repeated')
+    parser.add_argument(
         '--train-frac',
         type=float,
         dest='train_frac',
@@ -110,8 +68,7 @@ if __name__ == '__main__':
         type=int,
         dest='epochs',
         default=DEF_EPOCHS,
-        help='Number of training epochs'
-    )
+        help='Number of training epochs')
     parser.add_argument(
         '--display-data',
         dest='display_data',
@@ -124,6 +81,7 @@ if __name__ == '__main__':
     train_dataset, test_dataset = get_data(
         batch_size=args.batch_size,
         shuffle_buffer=args.shuffle_buffer,
+        repeat_num=args.repeat_num,
         train_frac=args.train_frac,
         display_data=args.display_data)
     train_and_evaluate_model(
