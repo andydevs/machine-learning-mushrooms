@@ -46,10 +46,10 @@ class MushroomClassifierModel(keras.Model):
         # Create index based on string vocabulary.
         # Then one hot encode and concatenate resulting vector
         self._index = { 
-            k:StringLookup(vocabulary=list(v)) 
+            k:StringLookup(vocabulary=list(v), name=f'string-lookup-{k}') 
             for k,v in self._input.items() }
         self._one_hot = { 
-            k:CategoryEncoding(max_tokens=v.vocab_size()) 
+            k:CategoryEncoding(max_tokens=v.vocab_size(), name=f'category-encode-{k}') 
             for k,v in self._index.items() }
         self._concatenate = layers.Concatenate(axis=1)
 
