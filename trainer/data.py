@@ -17,8 +17,9 @@ def get_data(data_file, batch_size, shuffle_buffer, repeat_num, train_frac, disp
     labels = labels.apply(label_categories.index)
     dataset = tf.data.Dataset.from_tensor_slices((dict(df), labels))
 
-    # Preprocess labels
-    dataset = dataset.map(lambda feats, labels: (feats, tf.one_hot(labels, depth=2)))
+    # One-hot encode labels.
+    preprocess_labels = lambda labels: tf.one_hot(labels, depth=len(label_categories))
+    dataset = dataset.map(lambda feats, labels: (feats, preprocess_labels(labels)))
 
     # Shuffle, batch, and repeat dataset
     dataset = dataset.shuffle(shuffle_buffer)
