@@ -17,7 +17,6 @@ DEF_BATCH_SIZE = 200
 DEF_REPEAT_NUM = 4
 DEF_TRAIN_FRAC = 0.7
 DEF_EPOCHS = 10
-DEF_DISPLAY_DATA = False
 
 
 def train_and_evaluate_model(train_dataset, test_dataset, epochs=DEF_EPOCHS):
@@ -73,8 +72,14 @@ if __name__ == '__main__':
         '--display-data',
         dest='display_data',
         action='store_true',
-        default=DEF_DISPLAY_DATA,
+        default=False,
         help='Display data sample before training')
+    parser.add_argument(
+        '--no-train',
+        dest='train',
+        action='store_false',
+        default=True,
+        help='Don\'t run training. Dry-run process data.')
 
     # Parse args and train model
     args = parser.parse_args()
@@ -85,7 +90,8 @@ if __name__ == '__main__':
         repeat_num=args.repeat_num,
         train_frac=args.train_frac,
         display_data=args.display_data)
-    train_and_evaluate_model(
-        train_dataset=train_dataset,
-        test_dataset=test_dataset,
-        epochs=args.epochs)
+    if args.train:
+        train_and_evaluate_model(
+            train_dataset=train_dataset,
+            test_dataset=test_dataset,
+            epochs=args.epochs)
