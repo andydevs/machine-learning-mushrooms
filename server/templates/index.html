@@ -1,0 +1,31 @@
+{% extends "bootstrap/base.html" %}
+
+{% block head %}
+{{super()}}
+{% endblock %}
+
+{% block styles %}
+{{super()}}
+{% endblock %}
+
+{% block title %}
+    Machine Learning Mushrooms
+{% endblock %}
+
+{% block content %}
+    <div class='jumbotron jumbotron-fluid mushroom-tron'>
+        <div class='container p-3 little-black text-white'>
+            <h1 class='display-4'>Is it Poison?</h1>
+            <p class='lead'>Fill the form below to find out!</p>
+        </div>
+    </div>
+    <div class='container mb-3'>
+    </div>
+    <footer class='bg-light'>
+        <div class='container py-3 text-center text-muted font-italic'>
+            <p class='my-1'>Created by <a href='http://github.com/andydevs'>Andydevs</a></p>
+            <p class='my-1'>Overengineering shit since 2015</p>
+            <p class='my-1'>View the <a href="https://github.com/andydevs/machine-learning-mushrooms">Github Repo</a></p>
+        </div>
+    </footer>
+{% endblock %}
