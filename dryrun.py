@@ -4,8 +4,13 @@ Predict output mushroom given input
 import tensorflow as tf
 import numpy as np
 from random import choice
+from argparse import ArgumentParser
 from pprint import PrettyPrinter
 
+# Utility (args and pretty printer)
+parser = ArgumentParser()
+parser.add_argument('--size', dest='size', type=int, default=9)
+args = parser.parse_args()
 pp = PrettyPrinter()
 
 # Dictionary of possible values
@@ -39,8 +44,9 @@ model = tf.keras.models.load_model('files/models/saved-model.tf')
 
 # Dryrun model with random input
 datapoint = { 
-    k: np.char.array(choice(v))
+    k: np.char.array([choice(v) for i in range(args.size)])
     for k,v in dictionary.items() }
 pp.pprint(datapoint)
 output = model.predict(datapoint)
-pp.pprint(output)
+values = { 'e':output[:,0], 'p':output[:,1] }
+pp.pprint(values)
