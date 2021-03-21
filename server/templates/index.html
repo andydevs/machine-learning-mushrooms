@@ -2,15 +2,17 @@
 {% import "bootstrap/wtf.html" as wtf %}
 
 {% block head %}
-{{super()}}
+{{ super() }}
+<link rel="icon" href="{{url_for('static', filename='favicon.ico')}}">
 {% endblock %}
 
 {% block styles %}
-{{super()}}
+{{ super() }}
+<link rel="stylesheet" href="{{url_for('static', filename='custom.css')}}">
 {% endblock %}
 
 {% block title %}
-    Machine Learning Mushrooms
+Machine Learning Mushrooms
 {% endblock %}
 
 {% block content %}
@@ -28,6 +30,11 @@
             <p class='my-1'>Created by <a href='http://github.com/andydevs'>Andydevs</a></p>
             <p class='my-1'>Overengineering shit since 2015</p>
             <p class='my-1'>View the <a href="https://github.com/andydevs/machine-learning-mushrooms">Github Repo</a></p>
+            <p class='my-1'>
+                Credits to 
+                <a href="http://naturewallbase.blogspot.com/2011/07/hd-mushroom-wallpapers.html">HD Mushroom Wallpapers</a> 
+                for the jumbotron image
+            </p>
         </div>
     </footer>
 {% endblock %}
