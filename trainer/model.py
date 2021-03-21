@@ -63,6 +63,5 @@ class MushroomClassifierModel(keras.Model):
         indexes = { k:self._index[k](v) for k,v in inputs.items() }
         one_hots = { k:self._one_hot[k](v) for k,v in indexes.items() }
         input_vector = self._concatenate(list(one_hots.values()))
-
-        # Feed through dense
-        return self._dense(input_vector)
+        labels = self._dense(input_vector)
+        return labels
