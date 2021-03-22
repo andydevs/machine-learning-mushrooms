@@ -27,8 +27,8 @@ Machine Learning Mushrooms
             <div class="card my-5 bg-{{ 'danger' if result['p'] > result['e'] else 'success' }} text-white">
                 <div class="card-body">
                     <h3 class="card-title">Looks like it's {{ 'Poision' if result['p'] > result['e'] else 'Edible' }}!</h3>
-                    <p class="card-text"> {{ result['p']*100 | round }}% Chance it's poisionous </p>
-                    <p class="card-text"> {{ result['e']*100 | round }}% Chance it's edible </p>
+                    <p class="card-text"> {{ 100*result['p'] | round(1) }}% Chance it's poisionous </p>
+                    <p class="card-text"> {{ 100*result['e'] | round(1) }}% Chance it's edible </p>
                 </div>
             </div>
         {% endif %}
