@@ -11,14 +11,6 @@ from .model import MushroomClassifierModel
 DATA_FILE = 'files/data/mushrooms.csv'
 MODEL_FILE = 'files/models/saved-model.tf'
 
-# Defaults
-DEF_SHUFF_BUFF = 100
-DEF_BATCH_SIZE = 200
-DEF_REPEAT_NUM = 4
-DEF_TRAIN_FRAC = 0.7
-DEF_EPOCHS = 10
-
-
 def train_and_evaluate_model(train_dataset, test_dataset, epochs=DEF_EPOCHS):
     """
     Train model. Save model afterwards.
@@ -42,31 +34,31 @@ if __name__ == '__main__':
         '--batch',
         type=int,
         dest='batch_size',
-        default=DEF_BATCH_SIZE, 
+        default=200, 
         help='Batch size of data')
     parser.add_argument(
         '--shuffle',
         type=int,
         dest='shuffle_buffer',
-        default=DEF_SHUFF_BUFF, 
+        default=100, 
         help='Size of shuffle buffer')
     parser.add_argument(
         '--repeat',
         type=int,
         dest='repeat_num',
-        default=DEF_REPEAT_NUM,
+        default=5,
         help='Number of times that the dataset is repeated')
     parser.add_argument(
         '--train-frac',
         type=float,
         dest='train_frac',
-        default=DEF_TRAIN_FRAC, 
+        default=0.7, 
         help='Fraction of data for training (remainder is testing)')
     parser.add_argument(
         '--epochs',
         type=int,
         dest='epochs',
-        default=DEF_EPOCHS,
+        default=10,
         help='Number of training epochs')
     parser.add_argument(
         '--display-data',
