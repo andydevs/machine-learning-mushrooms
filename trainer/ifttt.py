@@ -4,6 +4,7 @@ IFTTT Callbacks
 from requests import post
 from tensorflow.keras.callbacks import Callback
 
+
 class IFTTTTrainingCompleteCallback(Callback):
     ifttt_key = 'bxoTj4tM935zzKaQcJUQtO'
     event_name = 'training_complete'
