@@ -6,7 +6,7 @@ import pandas as pd
 from argparse import ArgumentParser
 from .data import get_data
 from .model import MushroomClassifierModel
-from .ifttt import IFTTTTrainingCompleteCallback
+from . import ifttt
 
 # Training Job Name
 JOBNAME = 'machine-learning-mushrooms'
@@ -28,7 +28,8 @@ def train_and_evaluate_model(train_dataset, test_dataset, epochs):
     model.fit(train_dataset, 
         epochs=epochs, 
         callbacks=[
-            IFTTTTrainingCompleteCallback(JOBNAME)
+            ifttt.IFTTTTrainingCompleteCallback(JOBNAME),
+            ifttt.IFTTTTrainingProgressCallback(JOBNAME, epochs)
         ])
     model.evaluate(test_dataset)
     model.summary()
